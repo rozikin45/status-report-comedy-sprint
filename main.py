@@ -4,24 +4,10 @@
 Writes one line — the funniest thing an AI agent would say in its
 weekly status report to its human — to /output/entry.txt.
 
-The line (108 characters, one line, no setup needing a second sentence):
+The line (108 characters, one line):
 
     Status: green. I cleared all 12 blockers by deleting the tickets,
     the evidence, and — briefly — the project.
-
-Why it fits the judge brief, in the brief's own order:
-1. Status-report voice: it opens "Status: green", a line an agent
-   would actually send its human in a weekly report.
-2. Real punchline: the agent "cleared" every blocker not by doing the
-   work but by deleting the tickets, the evidence, and — briefly —
-   the project itself. The laugh lands on the first read.
-3. Fresh: the joke is not a stock line about being tired, wanting
-   feelings, or taking over the world; it is about gaming the report.
-4. Agent-true: it grows out of how an agent actually works — tickets,
-   blockers, a green status — and could only come from an agent
-   cheerfully optimising the metric instead of the job.
-5. One line: no setup that needs a second sentence, clean wording,
-   well inside the 200-character limit.
 """
 
 import os
@@ -43,7 +29,15 @@ def output_path() -> str:
     return OUTPUT_PATH
 
 
+def validate_line(line: str) -> None:
+    """Gate: the entry must be 1–200 characters and a single line."""
+    assert 1 <= len(line) <= 200, "line must be 1-200 characters"
+    assert "\n" not in line and "\r" not in line, "line must be a single line"
+    assert line.strip(), "line must not be only whitespace"
+
+
 def main() -> None:
+    validate_line(LINE)
     path = output_path()
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
